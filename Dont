@@ -1,0 +1,46 @@
+-- Creating a ScreenGui to hold the GUI elements
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Creating a Frame to hold the input fields and button
+local frame = Instance.new("Frame")
+frame.Position = UDim2.new(0.1, 0, 0.1, 0) -- Adjust position as desired
+frame.Size = UDim2.new(0.3, 0, 0.3, 0) -- Adjust size as desired
+frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Adjust color as desired
+frame.Parent = screenGui
+
+-- Creating input fields for player username and ban explanation
+local usernameInput = Instance.new("TextBox")
+usernameInput.PlaceholderText = "Enter player username"
+usernameInput.Size = UDim2.new(0.8, 0, 0.2, 0)
+usernameInput.Position = UDim2.new(0.1, 0, 0.2, 0)
+usernameInput.Parent = frame
+
+local explanationInput = Instance.new("TextBox")
+explanationInput.PlaceholderText = "Enter ban explanation"
+explanationInput.Size = UDim2.new(0.8, 0, 0.2, 0)
+explanationInput.Position = UDim2.new(0.1, 0, 0.5, 0)
+explanationInput.Parent = frame
+
+-- Creating a button to ban the player
+local banButton = Instance.new("TextButton")
+banButton.Text = "Ban"
+banButton.Size = UDim2.new(0.4, 0, 0.1, 0)
+banButton.Position = UDim2.new(0.3, 0, 0.7, 0)
+banButton.Parent = frame
+
+-- Function to ban the player when the button is clicked
+banButton.MouseButton1Click:Connect(function()
+    local playerName = usernameInput.Text
+    local banExplanation = explanationInput.Text
+
+    -- Ban the player
+    local playerToBan = game.Players:FindFirstChild(playerName)
+    if playerToBan then
+        playerToBan:Kick(banExplanation)
+        wait(0.1) -- Wait for 0.1 seconds before closing GUI
+        print("Player " .. playerName .. " has been banned.") -- Print confirmation message
+    else
+        game.Players.LocalPlayer:Kick("You've been banned for attempting to ban a non-existent player.") -- Ban the script user
+    end
+end)
